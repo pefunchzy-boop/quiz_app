@@ -1,0 +1,45 @@
+rules_version = '2';
+
+// À coller dans : Firebase Console > Firestore Database > Règles
+//
+// Ces règles remplacent le rôle que jouait le "serviceAccountKey.json" /
+// backend Express dans la version initiale : c'est ici que se joue la
+// vraie sécurité, pas dans le code du frontend.
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Quiz : tout le monde peut lire, tout le monde peut créer une fiche
+    // (pas d'authentification dans cette version simple), mais personne
+    // ne peut modifier ou supprimer une fiche existante depuis le site.
+    match /quizzes/{quizId} {
+      allow read: if true;
+      allow create: if request.resource.data.title is string
+                    && request.resource.data.title.size() > 0
+                    && request.resource.data.title.size() < 200
+                    && request.resource.data.questions is list
+                    && request.resource.data.questions.size() > 0
+                    && request.resource.data.questions.size() <= 50;
+      allow update, delete: if false;
+    }
+
+    // Scores : tout le monde peut lire (classement) et ajouter un score,
+    // mais personne ne peut modifier ou supprimer un score existant
+    // (ça évite qu'un élève truque le classement après coup).
+    match /scores/{scoreId} {
+      allow read: if true;
+      allow create: if request.resource.data.pseudo is string
+                    && request.resource.data.pseudo.size() > 0
+                    && request.resource.data.pseudo.size() < 60
+                    && request.resource.data.score is int
+                    && request.resource.data.total is int;
+      allow update, delete: if false;
+    }
+  }
+}
+
+// Remarque : comme il n'y a pas d'authentification, rien n'empêche
+// quelqu'un de bombarder ta base de fausses fiches ou faux scores
+// (spam). Pour un projet scolaire ce n'est pas grave. Si tu veux
+// durcir ça plus tard, les deux pistes sont : Firebase Authentication
+// (obliger à se connecter) et Firebase App Check (vérifier que les
+// requêtes viennent bien de ton site).
