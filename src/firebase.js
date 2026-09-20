@@ -15,12 +15,12 @@ import { getFirestore } from "firebase/firestore";
 // Firebase Console > Paramètres du projet > Tes applications > Config SDK
 // --------------------------------------------------------------------
 const firebaseConfig = {
-  apiKey: "AIzaSyB2PQ0GpQKDrolAqdx_iAPwpT1GAR06ROQ",
-  authDomain: "quiz-app-b1de9.firebaseapp.com",
-  projectId: "quiz-app-b1de9",
-  storageBucket: "quiz-app-b1de9.firebasestorage.app",
-  messagingSenderId: "241959493994",
-  appId: "1:241959493994:web:a6f1e05109f0fb04d74513"
+  apiKey: "TA_CLE_API",
+  authDomain: "TON_PROJET.firebaseapp.com",
+  projectId: "TON_PROJET",
+  storageBucket: "TON_PROJET.appspot.com",
+  messagingSenderId: "TON_SENDER_ID",
+  appId: "TON_APP_ID",
 };
 
 export const app = initializeApp(firebaseConfig);

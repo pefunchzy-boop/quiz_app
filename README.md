@@ -26,23 +26,31 @@ npm run dev
 
 Le site s'ouvre sur `http://localhost:5173`.
 
-## 3. Déploie sur GitHub Pages
+## 3. Déploie sur GitHub Pages (automatique, rien à installer)
 
-1. Crée un dépôt GitHub (par exemple `quiz_app`) et pousse ce projet dedans.
-2. Ouvre `vite.config.js` et vérifie que `base` correspond bien au nom de
-   ton dépôt (ex : `/quiz_app/`).
-3. Installe l'outil de déploiement (déjà dans `package.json`, donc `npm
-   install` suffit) puis lance :
+Ce projet contient un fichier `.github/workflows/deploy.yml` : à chaque
+fois que tu pousses du code sur la branche `main`, GitHub build et publie
+le site tout seul — pas besoin d'avoir Node.js installé sur ton PC.
 
-```bash
-npm run deploy
-```
+1. Crée un dépôt GitHub (par exemple `quiz_app`) et pousse **tout ce
+   dossier** dedans (y compris le dossier `.github/`).
+2. Ouvre `vite.config.js` et vérifie que `base` correspond **exactement**
+   au nom de ton dépôt (ex : dépôt `quiz_app` → `base: "/quiz_app/"`).
+   C'est la cause n°1 des pages blanches : si ça ne correspond pas, le
+   site ne trouve pas ses propres fichiers CSS/JS une fois en ligne.
+3. Dans GitHub, va dans **Settings > Pages** du dépôt. Dans
+   "Build and deployment > Source", choisis **GitHub Actions** (pas
+   "Deploy from a branch").
+4. Va dans l'onglet **Actions** du dépôt : tu devrais voir le workflow
+   "Déploiement GitHub Pages" tourner automatiquement après ton push.
+   Attends qu'il passe au vert (1-2 minutes).
+5. Ton site est en ligne à `https://tonpseudo.github.io/quiz_app/`.
 
-Ça build le site et le pousse automatiquement sur une branche `gh-pages`.
-
-4. Dans GitHub, va dans **Settings > Pages** du dépôt, et choisis comme
-   source la branche `gh-pages`. Ton site sera accessible à l'adresse
-   `https://tonpseudo.github.io/quiz_app/`.
+### Si la page reste blanche malgré tout
+Ouvre le site, appuie sur **F12** (ou clic droit > Inspecter) puis
+l'onglet **Console** : le message d'erreur en rouge te dira la vraie
+cause (souvent : `base` mal réglé, ou config Firebase pas encore remplie
+dans `src/firebase.js`).
 
 ## Sécurité — ce qui a changé par rapport à la première version
 
